@@ -6,12 +6,12 @@
 	email {$ACME_EMAIL}
 }
 
-# Send www and the old stugg.dk domain to the apex.
-www.stygband.dk, stugg.dk, www.stugg.dk {
-	redir https://stygband.dk{uri} permanent
+# Send www to the apex.
+www.stugg.dk {
+	redir https://stugg.dk{uri} permanent
 }
 
-stygband.dk {
+stugg.dk {
 	encode zstd gzip
 
 	# Baseline security headers (EKS-200 hardening).
