@@ -1,5 +1,5 @@
 # Stügg band site — server target state (EKS-50).
-# Lives on the server at /opt/stugg/ (cloned from the eksamen-band-deploy repo).
+# Lives on the server at /opt/stugg/ (cloned from the stygband-deploy repo).
 # Compose gives this project its own isolated network + named volumes;
 # all secrets stay in a gitignored .env.
 #

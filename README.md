@@ -1,10 +1,14 @@
-# eksamen-band-deploy
+# stygband-deploy
 
 Server target state for the Stügg band site (EKS-50). This repo is cloned to
 **`/opt/stugg/`** on the server. It is fully isolated from any other stack on
 the box: Compose gives this project its own network, its own named volumes,
 its own `.env`, and its own backups. It does not touch, share, or depend on
 anything else.
+
+Moved out of the `EK-BarHjaMagMik/eksamen-band-*` exam repos, which are kept
+as they were. The app code lives in `stygband-backend` and
+`stygband-frontend`.
 
 ```
 caddy (:80/:443)  ──►  frontend (:80, static)
@@ -29,7 +33,9 @@ the public reverse proxy and terminates HTTPS via Let's Encrypt.
 3. **Router** — forward external TCP **80 and 443** to this server's LAN IP
    (`<server-LAN-IP>`, e.g. `192.168.x.x`). Nothing else is forwarded; SSH
    stays off the internet.
-4. **DNS** — point `stugg.dk` (and `www`) at the connection's public IP.
+4. **DNS** — point `stygband.dk` (and `www`) at the connection's public IP.
+   The old `stugg.dk` (and `www`) must keep pointing here too; Caddy
+   redirects it to `stygband.dk`.
    Because the IP is dynamic, move the zone to Cloudflare (DNS-only / grey
    cloud), create a scoped `Zone:DNS:Edit` token, put it in `.env` as
    `CF_API_TOKEN`, and run the DDNS updater (step 6). Registrar stays
@@ -47,7 +53,7 @@ the public reverse proxy and terminates HTTPS via Let's Encrypt.
    ```bash
    docker run -d --name stugg-ddns --restart unless-stopped --network host \
      -e CLOUDFLARE_API_TOKEN="$CF_API_TOKEN" \
-     -e DOMAINS=stugg.dk -e PROXIED=false \
+     -e DOMAINS=stygband.dk,www.stygband.dk,stugg.dk,www.stugg.dk -e PROXIED=false \
      favonia/cloudflare-ddns:latest
    ```
    (`--network host` so it can read the connection's real public IP.
